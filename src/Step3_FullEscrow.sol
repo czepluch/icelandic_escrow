@@ -16,6 +16,7 @@ pragma solidity ^0.8.0;
  * 3. Discuss the "unhappy path" - when things go wrong
  * 4. Explore the role of trusted third parties in smart contracts
  * 5. Test all scenarios: happy path, buyer dispute, seller dispute
+ * 6. FIND THE BUG: There's a critical security vulnerability in resolveDispute()
  *
  * Discussion Points:
  * - What if the arbiter is malicious or unavailable?
@@ -88,9 +89,12 @@ contract Step3_FullEscrow {
     /**
      * Arbiter resolves dispute by deciding who receives funds
      * This is a trusted third party mechanism
+     *
+     * SECURITY EXERCISE: Can you spot the critical vulnerability in this function?
+     * Hint: Who can call this function? Test it in Remix with different accounts.
      */
     function resolveDispute(bool payBuyer) external {
-        require(msg.sender == arbiter, "Only arbiter can resolve");
+        // BUG: Missing access control! Anyone can resolve disputes, not just the arbiter
         require(currentState == State.DISPUTED, "No dispute");
 
         if (payBuyer) {
@@ -105,3 +109,37 @@ contract Step3_FullEscrow {
         fundsReleased = true;
     }
 }
+
+/**
+ * BONUS CHALLENGES - Ideas for Further Development:
+ *
+ * 1. Timeout Mechanism
+ *    - Add a deadline after which buyer can automatically get refund
+ *    - Use block.timestamp for time tracking
+ *    - Prevents seller from never delivering
+ *
+ * 2. Partial Payments
+ *    - Allow multiple deposits instead of single payment
+ *    - Track total deposited amount
+ *    - Useful for milestone-based deliveries
+ *
+ * 3. Fee Collection
+ *    - Arbiter charges a small fee (e.g., 1%) for dispute resolution
+ *    - Deduct fee before transferring to winner
+ *    - Incentivizes fair arbitration
+ *
+ * 4. Multiple Arbiters
+ *    - Implement a voting system with 3+ arbiters
+ *    - Majority vote determines outcome
+ *    - Reduces single point of failure
+ *
+ * 5. Upgradeable Pattern
+ *    - How would you handle bug fixes in production?
+ *    - Proxy patterns vs. migration contracts
+ *    - Trade-offs between upgradeability and immutability
+ *
+ * 6. Emergency Pause
+ *    - Circuit breaker pattern to freeze contract
+ *    - Who should have this power?
+ *    - How does this conflict with decentralization?
+ */
