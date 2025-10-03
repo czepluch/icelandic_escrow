@@ -94,7 +94,6 @@ contract Step3_FullEscrow {
      * Hint: Who can call this function? Test it in Remix with different accounts.
      */
     function resolveDispute(bool payBuyer) external {
-        // BUG: Missing access control! Anyone can resolve disputes, not just the arbiter
         require(currentState == State.DISPUTED, "No dispute");
 
         if (payBuyer) {
@@ -133,13 +132,4 @@ contract Step3_FullEscrow {
  *    - Majority vote determines outcome
  *    - Reduces single point of failure
  *
- * 5. Upgradeable Pattern
- *    - How would you handle bug fixes in production?
- *    - Proxy patterns vs. migration contracts
- *    - Trade-offs between upgradeability and immutability
- *
- * 6. Emergency Pause
- *    - Circuit breaker pattern to freeze contract
- *    - Who should have this power?
- *    - How does this conflict with decentralization?
  */

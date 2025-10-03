@@ -1,5 +1,8 @@
 # Icelandic Escrow - Smart Contract Workshop
 
+> ⚠️ **WARNING: Educational Purpose Only**  
+> This code is designed for training and educational purposes. It contains intentional bugs and security vulnerabilities for learning. **DO NOT use this code in production or with real funds.**
+
 A hands-on Solidity workshop for bank developers to understand distributed ledger development through building an escrow contract.
 
 ## Workshop Structure
@@ -58,16 +61,56 @@ Throughout the workshop, facilitate discussions about:
    - No rollbacks - every deployment is permanent
    - Disaster recovery must be built-in from the start
 
-## Usage
+## Getting Started
 
-### Build
+### For Workshop Participants
 
-```shell
-$ forge build
-```
+You have two options for working with this code:
 
-### Test
+**Option 1: Use Remix (No Setup Required)**
+1. Go to [remix.ethereum.org](https://remix.ethereum.org)
+2. Click "Load from GitHub" and paste: `https://github.com/czepluch/icelandic_escrow`
+3. Navigate to `src/` folder and start with `Step1_BasicEscrow.sol`
+4. Deploy and test contracts directly in Remix
 
-```shell
-$ forge test
-```
+**Option 2: Local Setup with Foundry (Recommended for Running Tests)**
+
+1. **Install Foundry**
+   ```shell
+   curl -L https://foundry.paradigm.xyz | bash
+   foundryup
+   ```
+
+2. **Clone the Repository**
+   ```shell
+   git clone https://github.com/czepluch/icelandic_escrow.git
+   cd icelandic_escrow
+   ```
+
+3. **Install Dependencies**
+   ```shell
+   forge install
+   ```
+
+4. **Build the Project**
+   ```shell
+   forge build
+   ```
+
+5. **Run Tests**
+   ```shell
+   # Run all tests
+   forge test
+   
+   # Run tests for specific step
+   forge test --match-path test/SimpleEscrow.t.sol
+   forge test --match-path test/Step4_BonusChallenges.t.sol
+   
+   # Run with verbose output to see details
+   forge test -vvv
+   ```
+
+### Understanding Test Results
+
+- **Step 3**: Has 1 intentionally failing test - can you find and fix the security bug?
+- **Step 4**: Has 25 failing tests - implement the bonus challenges to make them pass!
